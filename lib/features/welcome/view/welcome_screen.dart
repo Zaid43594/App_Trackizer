@@ -1,46 +1,65 @@
 import 'package:flutter/material.dart';
-import 'register_screen.dart';
 import '../../../core/colors.dart';
 import '../../../core/fonts.dart';
+import '../../../core/utils/responsive_utils.dart';
+import '../../../core/widgets/custom_button.dart' as custom;
+import '../controller/welcome_controller.dart';
+import 'register_screen.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
   @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  final WelcomeController _controller = WelcomeController();
+
+  // UI Event Handlers
+  void _handleGetStartedPressed() {
+    if (_controller.canNavigateToRegister()) {
+      _controller.prepareNavigationToRegister();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const Register1Screen()),
+      ).then((_) {
+        _controller.completeNavigation();
+      });
+    }
+  }
+
+  void _handleLoginPressed() {
+    if (_controller.canNavigateToLogin()) {
+      _controller.prepareNavigationToLogin();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login screen coming soon!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      _controller.completeNavigation();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    const double artboardWidth = 375.0;
-    const double artboardHeight = 812.0;
-    final double scaleX = size.width / artboardWidth;
-    final double scaleY = size.height / artboardHeight;
-    final double scale = scaleX < scaleY ? scaleX : scaleY;
-
-    // Detect if it's a tablet (wider screen)
-    final bool isTablet = size.width > 600;
-
-    // Adjust blob positions for tablets
-    final double leftBlobLeft =
-        isTablet ? size.width * -0.57 : size.width * -0.62;
-    final double leftBlobTop =
-        isTablet ? size.height * 0.2 : size.height * 0.148;
-    final double rightBlobLeft =
-        isTablet ? size.width * 0.75 : size.width * 0.853;
-    final double rightBlobTop =
-        isTablet ? size.height * 0.5 : size.height * 0.443;
+    final scale = ResponsiveUtils.getScale(context);
+    final blobPositions = ResponsiveUtils.getBlobPositions(context);
 
     return Scaffold(
       backgroundColor: ColorsApp.background,
       body: Center(
         child: SizedBox(
-          width: artboardWidth * scale,
-          height: artboardHeight * scale,
+          width: ResponsiveUtils.artboardWidth * scale,
+          height: ResponsiveUtils.artboardHeight * scale,
           child: Stack(
             clipBehavior: Clip.none,
             children: [
               // log-bg2l.png (left decorative blob) - adaptive positioning
               Positioned(
-                left: leftBlobLeft,
-                top: leftBlobTop,
+                left: blobPositions['leftBlobLeft']!,
+                top: blobPositions['leftBlobTop']!,
                 width: 288 * scale,
                 height: 219 * scale,
                 child: Opacity(
@@ -56,8 +75,8 @@ class WelcomeScreen extends StatelessWidget {
               ),
               // log-bg1r.png (right decorative blob) - adaptive positioning
               Positioned(
-                left: rightBlobLeft,
-                top: rightBlobTop,
+                left: blobPositions['rightBlobLeft']!,
+                top: blobPositions['rightBlobTop']!,
                 width: 288 * scale,
                 height: 219 * scale,
                 child: Opacity(
@@ -111,46 +130,11 @@ class WelcomeScreen extends StatelessWidget {
                 top: 670 * scale,
                 width: 324 * scale,
                 height: 48 * scale,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Register1Screen(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(999 * scale),
-                      gradient: const LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Color(0xFFFF8500), Color(0xFFFF8500)],
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: ColorsApp.orangapp.withOpacity(0.5),
-                          blurRadius: 25 * scale,
-                          offset: Offset(0, 8 * scale),
-                        ),
-                      ],
-                      border: Border.all(
-                        width: 1 * scale,
-                        style: BorderStyle.solid,
-                        color: ColorsApp.transcolor,
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Get started',
-                        style: AppFont.h3(context, ColorsApp.whiteapp).copyWith(
-                          fontSize: 16 * scale,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
+                child: custom.CustomButton(
+                  text: 'Get started',
+                  onPressed: () => _handleGetStartedPressed(),
+                  style: custom.ButtonStyle.primary(scale: scale),
+                  scale: scale,
                 ),
               ),
               // I have an account Button
@@ -159,25 +143,11 @@ class WelcomeScreen extends StatelessWidget {
                 top: 734 * scale,
                 width: 324 * scale,
                 height: 48 * scale,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(999 * scale),
-                    color: const Color(0x1AFFFFFF),
-                    border: Border.all(
-                      width: 1 * scale,
-                      style: BorderStyle.solid,
-                      color: ColorsApp.transcolor,
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'I have an account',
-                      style: AppFont.h3(context, ColorsApp.whiteapp).copyWith(
-                        fontSize: 16 * scale,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                child: custom.CustomButton(
+                  text: 'I have an account',
+                  onPressed: () => _handleLoginPressed(),
+                  style: custom.ButtonStyle.secondary(scale: scale),
+                  scale: scale,
                 ),
               ),
             ],
