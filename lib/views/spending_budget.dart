@@ -173,18 +173,22 @@ class _SpendingBudgetState extends State<SpendingBudget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(width: 90.w),
+                SizedBox(width: 109.w),
                 Text(
                   "Spending & Budgets",
                   style: AppFont.BodyLarge(context, ColorsApp.titleapp),
                 ),
-                SizedBox(width: 62.w),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.settings_outlined,
-                    color: ColorsApp.titleapp,
-                    size: 24,
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.settings_outlined,
+                        color: ColorsApp.titleapp,
+                        size: 24,
+                      ),
+                    ),
                   ),
                 ),
               ],
