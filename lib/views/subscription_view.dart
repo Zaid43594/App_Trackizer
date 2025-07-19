@@ -33,7 +33,6 @@ class _NewSubscriptionViewState extends State<NewSubscriptionView> {
 
   @override
   void dispose() {
-    widget.controller.dispose();
     super.dispose();
   }
 
