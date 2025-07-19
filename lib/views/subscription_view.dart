@@ -6,6 +6,7 @@ import 'package:trackizer/core/style/fonts.dart';
 import 'package:trackizer/models/subscription_model.dart';
 import 'package:trackizer/widgets/icon_button.dart';
 import 'package:trackizer/widgets/orange_button.dart';
+import 'package:trackizer/widgets/text_form.dart';
 
 class NewSubscriptionView extends StatefulWidget {
   final NewSubscriptionController controller;
@@ -42,27 +43,29 @@ class _NewSubscriptionViewState extends State<NewSubscriptionView> {
     final model = widget.model;
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       backgroundColor: ColorsApp.background,
-      body: Stack(
-        children: [
-          Container(
-            width: 375.w,
-            height: 476.h,
-            decoration: BoxDecoration(
-              color: ColorsApp.cardcolor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(24.r),
-                bottomRight: Radius.circular(24.r),
-              ),
-            ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left: 0,
+            right: 0,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 24.h,
           ),
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: double.infinity,
+                height: 476.h,
+                decoration: BoxDecoration(
+                  color: ColorsApp.cardcolor,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(24.r),
+                    bottomRight: Radius.circular(24.r),
+                  ),
+                ),
+                child: Padding(
                   padding: EdgeInsets.fromLTRB(24.w, 32.h, 24.w, 24.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +80,7 @@ class _NewSubscriptionViewState extends State<NewSubscriptionView> {
                               top: 0,
                               bottom: 0,
                               child: IconButton(
-                                onPressed: () {},
+                                onPressed: () => Navigator.pop(context),
                                 icon: Icon(
                                   Icons.arrow_back_ios,
                                   color: ColorsApp.titleapp,
@@ -112,154 +115,132 @@ class _NewSubscriptionViewState extends State<NewSubscriptionView> {
                         ),
                       ),
                       SizedBox(height: 30.h),
+                      SizedBox(
+                        height: 220.h,
+                        child: PageView.builder(
+                          controller: controller.pageController,
+                          itemCount: model.imgList.length,
+                          itemBuilder: (context, index) {
+                            final isCurrent =
+                                index == controller.currentPage.round();
+                            final scale = isCurrent ? 1.0 : 0.85;
+
+                            return AnimatedScale(
+                              scale: scale,
+                              duration: const Duration(milliseconds: 300),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      height: 161.h,
+                                      width: 161.w,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          48.r,
+                                        ),
+                                        color: Colors.white10,
+                                      ),
+                                      clipBehavior: Clip.antiAlias,
+                                      child: Image.asset(
+                                        model.imgList[index],
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                    SizedBox(height: 23.h),
+                                    Text(
+                                      model.nameList[index],
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: ColorsApp.whiteapp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
+              ),
 
-                SizedBox(
-                  height: 220.h,
-                  child: PageView.builder(
-                    controller: controller.pageController,
-                    itemCount: model.imgList.length,
-                    itemBuilder: (context, index) {
-                      final isCurrent = index == controller.currentPage.round();
-                      final scale = isCurrent ? 1.0 : 0.85;
+              SizedBox(height: 24.h),
 
-                      return AnimatedScale(
-                        scale: scale,
-                        duration: const Duration(milliseconds: 300),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w),
-                          child: Column(
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Column(
+                  children: [
+                    Text(
+                      "Description",
+                      style: AppFont.bodymeduim(context, ColorsApp.titleapp),
+                    ),
+                    SizedBox(height: 8.h),
+                    TextForm(),
+                    SizedBox(height: 51.h),
+                    Center(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          IconButtonContainer(icon: Icons.remove),
+                          SizedBox(width: 35.w),
+                          Column(
                             mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                height: 161.h,
-                                width: 161.w,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(48.r),
-                                  color: Colors.white10,
-                                ),
-                                clipBehavior: Clip.antiAlias,
-                                child: Image.asset(
-                                  model.imgList[index],
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                              SizedBox(height: 23.h),
                               Text(
-                                model.nameList[index],
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: ColorsApp.whiteapp,
-                                ),
+                                "Monthly price",
+                                style: AppFont.H1(context, ColorsApp.titleapp),
                               ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-
-                SizedBox(height: 24.h),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Description",
-                        style: AppFont.bodymeduim(context, ColorsApp.titleapp),
-                      ),
-                      SizedBox(height: 8.h),
-                      SizedBox(
-                        height: 48.h,
-                        width: 327.w,
-                        child: TextFormField(
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.normal,
-                            color: ColorsApp.whiteapp,
-                          ),
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16.r),
-                              borderSide: BorderSide(
-                                color: ColorsApp.cardcolor,
-                                width: 1.5.w,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.r),
-                              borderSide: BorderSide(
-                                color: ColorsApp.cardcolor,
-                                width: 2.w,
-                              ),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                              vertical: 14.h,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 51.h),
-                      Center(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            IconButtonContainer(icon: Icons.remove),
-                            SizedBox(width: 35.w),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Monthly price",
-                                  style: AppFont.H1(
-                                    context,
-                                    ColorsApp.titleapp,
-                                  ),
-                                ),
-                                SizedBox(height: 6.h),
-                                SizedBox(
-                                  width: 162.w,
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                      hintText: "       5.99 SP",
-                                      hintStyle: AppFont.H5(
-                                        context,
-                                        ColorsApp.whiteapp,
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: ColorsApp.cardcolor,
-                                        ),
+                              SizedBox(height: 6.h),
+                              SizedBox(
+                                width: 162.w,
+                                child: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    hintText: "        5.99 SP",
+                                    hintStyle: AppFont.H5(
+                                      context,
+                                      ColorsApp.whiteapp,
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: ColorsApp.cardcolor,
                                       ),
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(width: 30.w),
-
-                            IconButtonContainer(icon: Icons.add),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 30.w),
+                          IconButtonContainer(icon: Icons.add),
+                        ],
                       ),
-                      SizedBox(height: 55.h),
-                      OrangeButton(text: "Add this platform"),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 55.h),
+                    CustomElevatedButton(
+                      text: "Add this platform",
+                      onPressed: () {},
+                      colorbutton: ColorsApp.orangapp,
+                      height: 48.h,
+                      width: 324.w,
+                      colorborder: ColorsApp.rangeColor,
+                      widthborder: 1.w,
+                      style: AppFont.H2(context, ColorsApp.whiteapp),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
