@@ -1,138 +1,133 @@
+import 'package:app2/view/signin.dart';
+
+import '../core/custom_gesture_detector.dart';
+
+import '../core/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import '../view/signin.dart';
-import 'colors.dart';
 
-class CustomBottomNavWithFAB extends StatefulWidget {
-  const CustomBottomNavWithFAB({super.key});
+import '../view/Credit_Cards.dart';
+
+
+class BottomNavigationBarPage extends StatefulWidget {
+  const BottomNavigationBarPage({Key? key}) : super(key: key);
 
   @override
-  State<CustomBottomNavWithFAB> createState() => _CustomBottomNavWithFABState();
+  State<BottomNavigationBarPage> createState() =>
+      _BottomNavigationBarPageState();
 }
 
-class _CustomBottomNavWithFABState extends State<CustomBottomNavWithFAB> {
-  int selectedIndex = 0;
+class _BottomNavigationBarPageState extends State<BottomNavigationBarPage> {
+  int _currentIndex = 0;
 
-  void onItemTapped(int index) {
+  void _onTap(int index) {
     setState(() {
-      selectedIndex = index;
+      _currentIndex = index;
     });
   }
+
+  final List<Widget> _pages = [
+    const CreditCardScreen()
+    // const HomePage(),
+    // const GridPage(),
+    // const CalendarPage(),
+    // const CreditCardScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: ColorsApp.background,
+      extendBody: true,
       floatingActionButton: Container(
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
               color: ColorsApp.orangapp.withOpacity(0.6),
-              blurRadius: 25.r,
-              spreadRadius: 1.r,
-              offset: Offset(0, 8.h),
+              blurRadius: 25,
+              spreadRadius: 1,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
         child: Transform.translate(
-          offset: Offset(8.w, 4.h),
+          offset: const Offset(8, 4),
           child: FloatingActionButton(
             onPressed: () {},
             backgroundColor: ColorsApp.orangapp,
             elevation: 6,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.r),
+              borderRadius: BorderRadius.circular(30),
             ),
-            child: Icon(Icons.add, color: Colors.white, size: 28.sp),
+            child: Icon(
+                 Icons.add, color: ColorsApp.whiteapp, size: 28),
           ),
         ),
       ),
-      floatingActionButtonLocation: CustomFABLocation(
-        offsetX: -18.w,
-        offsetY: 18.h,
-      ),
+      floatingActionButtonLocation: CustomFABLocation(offsetX: -13, offsetY: 7),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),   
-             child: Container(
-           height: 80.h,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Container(
+          height: 100.h,
           width: 329.w,
-          padding: EdgeInsets.only(bottom: 20.h),
+          padding: EdgeInsets.only(bottom: 20),
           child: PhysicalModel(
-            color: Colors.transparent,
+            color: ColorsApp.transcolor,
             elevation: 20,
-            borderRadius: BorderRadius.circular(16.r),
+            borderRadius: BorderRadius.circular(16),
             clipBehavior: Clip.antiAlias,
             child: BottomAppBar(
               color: ColorsApp.cardcolor,
-              shape: const CircularNotchedRectangle(),
-              notchMargin: 9.r,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          buildNavIcon('assets/images/Home.svg', 0),
-                             buildNavIcon(
-                            'assets/images/Budgets.svg',
-                            3,
-                            navigate: true,
-                          ),
-                        ],
-                      ),
-                    ),
+              shape: CircularNotchedRectangle(),
+              notchMargin: 9.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(width: 20.w),
+                  CustomGestureDetector(
+                    height: 25.h,
+                    width: 25.w,
+                    path: "assets/images/Home.svg",
+                    onTap: () => _onTap(0),
+                    color:
+                        _currentIndex == 0 ? ColorsApp.orangapp : Colors.white,
+                  ),
+                  SizedBox(width: 45.w),
+                  CustomGestureDetector(
+                    height: 25.h,
+                    width: 25.w,
+                    path: "assets/images/Budgets.svg",
+                    onTap: () => _onTap(1),
+                    color:
+                        _currentIndex == 1 ? ColorsApp.orangapp : Colors.white,
+                  ),
+                  //
+                  SizedBox(width: 100.w),
 
-                    SizedBox(width: 40),
-
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-
-                          buildNavIcon('assets/images/Calendar.svg', 2),
-                                                                             buildNavIcon('assets/images/Credit Cards.svg', 1),
-
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  CustomGestureDetector(
+                    height: 25.h,
+                    width: 25.w,
+                    path: "assets/images/Calendar.svg",
+                    onTap: () => _onTap(2),
+                    color:
+                        _currentIndex == 2 ? ColorsApp.orangapp : Colors.white,
+                  ),
+                  SizedBox(width: 45.w),
+                  CustomGestureDetector(
+                    height: 25.h,
+                    width: 25.w,
+                    path: "assets/images/Budgets.svg",
+                    onTap: () => _onTap(3),
+                    color:
+                        _currentIndex == 3 ? ColorsApp.orangapp : Colors.white,
+                  ),
+                ],
               ),
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget buildNavIcon(String assetName, int index, {bool navigate = false}) {
-    return SizedBox(
-      height: 73.h,
-      width: 73.w,
-      child: Center(
-        child: IconButton(
-          padding: EdgeInsets.zero,
-          icon: SvgPicture.asset(
-            assetName,
-            color: selectedIndex == index ? ColorsApp.orangapp : Colors.white,
-            width: 30.w,
-            height: 30.h,
-          ),
-          onPressed: () {
-            onItemTapped(index);
-            if (navigate && index == 3) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SignIn()),
-              );
-            }
-          },
-        ),
-      ),
+      body: _pages[_currentIndex],
     );
   }
 }
@@ -149,7 +144,7 @@ class CustomFABLocation extends FloatingActionButtonLocation {
     final scaffoldSize = scaffoldGeometry.scaffoldSize;
 
     final x = (scaffoldSize.width - fabSize.width) / 1.90 + offsetX;
-    final y = scaffoldSize.height - fabSize.height - 80.h + offsetY;
+    final y = scaffoldSize.height - fabSize.height - 80 + offsetY;
 
     return Offset(x, y);
   }

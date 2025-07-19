@@ -1,7 +1,10 @@
+import '../core/ButtonWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../core/Custom_TextFormField.dart';
 import '../core/colors.dart';
+import '../core/fonts.dart';
 import 'Credit_Cards.dart';
 
 class SignIn extends StatefulWidget {
@@ -25,8 +28,10 @@ class _SignInState extends State<SignIn> {
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 50.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(child: Image.asset("assets/images/logo.png", width: 146.w)),
+            children: <Widget>[
+              Center(
+                child: Image.asset("assets/images/logo.png", width: 146.w),
+              ),
               SizedBox(height: 200.h),
 
               Text(
@@ -38,18 +43,13 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
               SizedBox(height: 8.h),
-
-              TextFormField(
+              CustomTextFormFieldyWidget(
                 controller: emailController,
-                decoration: InputDecoration(
-                  hintText: "Enter your email",
-                  hintStyle: GoogleFonts.inter(fontSize: 14.sp),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                ),
+                obscure: false,
+                keyboardtype: TextInputType.emailAddress,
+                size: 14,
+                borderRadius: 20,
               ),
-
               SizedBox(height: 24.h),
               Text(
                 "Password",
@@ -60,17 +60,12 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
               SizedBox(height: 8.h),
-
-              TextFormField(
+              CustomTextFormFieldyWidget(
                 controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: "Enter your password",
-                  hintStyle: GoogleFonts.inter(fontSize: 14.sp),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                ),
+                obscure: true,
+                keyboardtype: TextInputType.visiblePassword,
+                size: 14,
+                borderRadius: 20,
               ),
 
               SizedBox(height: 15.h),
@@ -114,40 +109,16 @@ class _SignInState extends State<SignIn> {
 
               SizedBox(height: 24.h),
               Center(
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: ColorsApp.orangapp,
-                        spreadRadius: 2.r,
-                        blurRadius: 25.r,
-                        offset: Offset(0, 9),
-                      ),
-                    ],
-                  ),
-                  child: SizedBox(
-                    width: 324.w,
-                    height: 48.h,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorsApp.orangapp,
-                        foregroundColor: ColorsApp.whiteapp,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(999.r),
-                        ),
-                      ),
-                      child: Text(
-                        "Sign In",
-                        style: GoogleFonts.inter(
-                          color: ColorsApp.whiteapp,
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
+                child: CustomElevatedButton(
+                  text: "Sgin In",
+                  sizetext: 14,
+                  colortext: ColorsApp.white70,
+                  color: ColorsApp.orangapp,
+                  colorborder: ColorsApp.orangapp,
+                  onPressed: () {},
+                  height: 48.h,
+                  width: 324.w,
+                  widthborder: 0,
                 ),
               ),
 
@@ -164,33 +135,16 @@ class _SignInState extends State<SignIn> {
                       ),
                     ),
                     SizedBox(height: 10.h),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(999.r),
-                      child: SizedBox(
-                        width: 324.w,
-                        height: 48.h,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const CreditCardScreen()),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: ColorsApp.boxcolor,
-                          ),
-                          child: Text(
-                            "Sign Up",
-                            style: GoogleFonts.inter(
-                              color: ColorsApp.whiteapp,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-
-                          ),
-                        ),
-                      ),
-
+                    CustomElevatedButton(
+                      text: "Sgin Up",
+                      sizetext: 14,
+                      colortext: ColorsApp.white70,
+                      color: ColorsApp.buttonapp,
+                      colorborder: ColorsApp.buttonapp,
+                      onPressed: () {},
+                      height: 48.h,
+                      width: 324.w,
+                      widthborder: 0,
                     ),
                   ],
                 ),
