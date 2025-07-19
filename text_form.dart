@@ -35,7 +35,7 @@ class TextForm extends StatelessWidget {
             borderSide: BorderSide(color: ColorsApp.cardcolor, width: 1.5.w),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(16.r),
             borderSide: BorderSide(color: ColorsApp.cardcolor, width: 2.w),
           ),
           contentPadding: EdgeInsets.symmetric(
