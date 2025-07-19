@@ -1,23 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:trackizer/core/style/colors.dart';
-import 'package:trackizer/core/style/fonts.dart';
 
-class OrangeButton extends StatelessWidget {
+class CustomElevatedButton extends StatelessWidget {
   final String text;
-  const OrangeButton({super.key, required this.text});
+  final Color colorbutton;
+  final Color colorborder;
+  final VoidCallback onPressed;
+  final double height;
+  final double width;
+  final double widthborder;
+  final TextStyle style;
+
+  const CustomElevatedButton({
+    super.key,
+    required this.text,
+    required this.colorbutton,
+    required this.onPressed,
+    required this.height,
+    required this.width,
+    required this.colorborder,
+    required this.widthborder,
+    required this.style,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 48.h,
-      width: 324.w,
+      height: height,
+      width: width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(32.r),
-        border: Border.all(color: ColorsApp.rangeColor, width: 1.w),
+        border: Border.all(color: colorborder, width: widthborder),
         boxShadow: [
           BoxShadow(
-            color: ColorsApp.orangapp.withOpacity(0.6),
+            color: colorbutton.withOpacity(0.6),
             blurRadius: 25,
             spreadRadius: 1,
             offset: const Offset(0, 8),
@@ -26,15 +43,15 @@ class OrangeButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: ColorsApp.orangapp,
+          backgroundColor: colorbutton,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32.r),
           ),
           elevation: 0,
-          shadowColor: Colors.transparent,
+          shadowColor: ColorsApp.transcolor,
         ),
-        onPressed: () {},
-        child: Text(text, style: AppFont.H2(context, ColorsApp.whiteapp)),
+        onPressed: onPressed,
+        child: Text(text, style: style),
       ),
     );
   }
