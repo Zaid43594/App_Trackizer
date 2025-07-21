@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import '../../../core/colors.dart';
 import '../../../core/fonts.dart';
 import '../../../core/utils/responsive_utils.dart';
@@ -56,6 +57,35 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
+              // Shadows-and-blur.svg (background overlay, below everything else)
+              Builder(
+                builder: (context) {
+                  final size = MediaQuery.of(context).size;
+                  final bool isTablet = size.width > 600;
+                  final double shadowLeft = 3;
+                  final double shadowTop = isTablet ? 150 * scale : 200 * scale;
+                  final double shadowWidth =
+                      isTablet ? 600 * scale : 480 * scale;
+                  final double shadowHeight =
+                      isTablet ? 500 * scale : 420 * scale;
+                  return Positioned(
+                    left: shadowLeft,
+                    top: shadowTop,
+                    width: shadowWidth,
+                    height: shadowHeight,
+                    child: Opacity(
+                      opacity: 1,
+                      child: Transform.rotate(
+                        angle: 15 * 3.1415926535 / 180,
+                        child: Image.asset(
+                          'assets/Shadows-and-blur.png',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
               // log-bg2l.png (left decorative blob) - adaptive positioning
               Positioned(
                 left: blobPositions['leftBlobLeft']!,
@@ -82,7 +112,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 child: Opacity(
                   opacity: 1.0,
                   child: Transform.rotate(
-                    angle: -41.66 * 3.1415926535 / 180,
+                    angle: 41.66 * 3.1415926535 / 180,
                     child: Image.asset(
                       'assets/log-bg1r.png',
                       fit: BoxFit.contain,

@@ -64,6 +64,7 @@ flutter:
     - assets/log-bg1r.png
     - assets/log-bg2l.png
     - assets/logo.png
+    - assets/Shadows-and-blur.png
 
   # To use the Inter font, add the font files to an assets/fonts/ directory and uncomment below:
   # fonts:

@@ -22,8 +22,8 @@ class ResponsiveUtils {
     return {
       'leftBlobLeft': isTabletDevice ? size.width * -0.57 : size.width * -0.62,
       'leftBlobTop': isTabletDevice ? size.height * 0.2 : size.height * 0.148,
-      'rightBlobLeft': isTabletDevice ? size.width * 0.75 : size.width * 0.853,
-      'rightBlobTop': isTabletDevice ? size.height * 0.5 : size.height * 0.443,
+      'rightBlobLeft': isTabletDevice ? size.width * 0.72 : size.width * 0.79,
+      'rightBlobTop': isTabletDevice ? size.height * 0.5 : size.height * 0.53,
     };
   }
 }
